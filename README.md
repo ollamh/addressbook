@@ -22,16 +22,60 @@ as a key (it was the quickest solution, not the perfect one)
 
 # Usage example
 
+Initialization
+
     >>> from addressbook import AddressBook, Person
     >>> ab = AddressBook()
+
+Add a person to the address book.
+
     >>> ab.add(Person('Jack', 'Jones', '234, 3rd avenue, City, Country', 
     ...    '+15555555555', 'jack.jones@example.com'))
-    >>> persons = ab.search('Jack') 
+
+Add a group to the address book.
+
+    >>> ab.add(Group('Simple group'))
+    
+Given a group we want to easily find its members.
+
+    >>> group = ab.get_group('Simple group')
+    >>> print(group._persons)
+
+Given a person we want to easily find the groups the person belongs to.
+
+    >>> person = Person(..)
+    >>> person.is_member_of(group)
+    True or False
+
+Find person by name (can supply either first name, last name, or both).
+    
+    >>> persons = ab.search('Jack')
+    >>> print(persons)
     [<Jack Jones (+15555555555) 234, 3rd avenue, City, Country jack.jones@example.com>]
+
+Find person by email address (can supply either the exact string or a prefix string, ie. both "alexander@company.com" and "alex" should work).
+    
+    >>> persons = ab.search('jack.jones@example.com') 
+    >>> print(persons)
+    [<Jack Jones (+15555555555) 234, 3rd avenue, City, Country jack.jones@example.com>]
+
+Add address, email, phone number
+    
     >>> jack = persons[0]
     >>> jack.add_address('444, A nice road, Home sweet home')
-    >>> jack.addresses
+    >>> print(jack.addresses)
     ['234, 3rd avenue, City, Country', '444, A nice road, Home sweet home']
+    
+    >>> jack.add_phone('+18005555556')
+    >>> print(jack.phones)
+    ['+18005555555', '+18005555556']
+    
+    >>> jack.add_email('jack.another@mail.com')
+    >>> print(jack.emails)
+    ['jack.jones@example.com', 'jack.another@mail.com']
+    
+    
+    
     
 # API
 
@@ -57,11 +101,17 @@ as a key (it was the quickest solution, not the perfect one)
         groups - list of person's groups        
 
 ### Methods:
-        
+
         add_address(address) - adds an address to person addresses
-        add_phone(phone_number) - adds phone number to person phones
+
+        # Will raise ValidationError if phone number is not starting with + or 00 followed by 10 numbers
+        add_phone(phone_number) - adds phone number to person phones.
+        
+        # Will raise ValidationError if email is not a valid one        
         add_email(email) - adds email to person emails
-        is_member_of(group_name) - checks if person is member of group
+        
+        is_member_of(group_name) - checks if person is member of group. Return either True or False
+        
         add_group(group) - adds group to person's groups list
         remove_group(group) - removes group from person's groups list
         
