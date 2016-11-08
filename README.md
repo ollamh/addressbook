@@ -13,11 +13,12 @@ on initialization for address book to work with certain dataset, e.g.
 
 By defaul, address file name is 'addressbook.dat'.
 
-For prefix search I'm using on of Tries implementation - a ternary search tree.
+For prefix search I'm using one of Tries implementation - a ternary search tree.
 I adopted it for this particular solution, every node holds a set of keys which
 point to corresponding persons data. Might be not a perfect solution but I
 always wanted to work with it. Complexity for insertion, lookup in average is 
-O(log n).
+O(log n). Groups I store as a list, Persons I store in dictionary, with full name
+as a key (it was the quickest solution, not the perfect one)
 
 # Usage example
 
@@ -36,7 +37,8 @@ O(log n).
 
 ## Person
 
-    Required parameters:
+### Parameters (all required):
+
         - first_name (string)
         - last_name (string)
         - street address (string)
@@ -46,15 +48,15 @@ O(log n).
     person = Person('Jack', 'Jones', '234, 3rd avenue, City, Country', 
         '+15555555555', 'jack.jones@example.com')
     
-    Attributes:
-    
+### Attributes:
+
         full_name - returns first name and last name concatenated
         emails - list of person's emails
         addresses - list of person's addresses
         phones - list of person's phones
         groups - list of person's groups        
 
-    Methods:
+### Methods:
         
         add_address(address) - adds an address to person addresses
         add_phone(phone_number) - adds phone number to person phones
@@ -66,10 +68,11 @@ O(log n).
 
 ## Group
 
-    Required parameters:
+### Parameters (required):
+
         - name (string)
 
-    Methods:
+### Methods:
         
         add_person(person) - adds Person to Group
         remove_person(person) - removes Person from Group
@@ -77,14 +80,15 @@ O(log n).
 
 ## AddressBook
 
-    Parameters:
+### Parameters:
+    
         - storage_file (string, non-required, default:'addressbook.dat') - path to storage file
 
-    Methods:
+### Methods:
+
         add(Person|Group) - adds Person or Group to AddressBook
         search(search_string) - performs prefix search on Person's first_name, last_name, full_name and email
-        get_group(group_name) - gets Group by name
-        
+        get_group(group_name) - gets Group by name        
 
 # Design-only question
 
