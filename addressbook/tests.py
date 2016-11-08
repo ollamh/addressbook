@@ -67,6 +67,8 @@ class ABTest(unittest.TestCase):
         self.ab.add(person)
         result = self.ab.search('test')
         self.assertEqual(len(result), 2)
+        result = self.ab.search('noway@example.com')
+        self.assertEqual(len(result), 1)
         result = self.ab.search('noway')
         self.assertEqual(len(result), 1)
         result = self.ab.search('nothing')
